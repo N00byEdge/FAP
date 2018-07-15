@@ -371,7 +371,7 @@ namespace FAP {
       if (numAttackers) {
         if (unit.unitType == BWAPI::UnitTypes::Protoss_Carrier) {
           unit.groundDamage = unit.airDamage = BWAPI::UnitTypes::Protoss_Interceptor.groundWeapon().damageAmount();
-          unit.airCooldown = unit.groundCooldown = static_cast<int>(37.0f / numAttackers);
+          unit.airCooldown = unit.groundCooldown = static_cast<int>(round(37.4f / numAttackers));
         }
 
         if (unit.unitType == BWAPI::UnitTypes::Terran_Bunker) {

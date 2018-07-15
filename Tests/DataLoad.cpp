@@ -275,8 +275,8 @@ TEST(Data, FullCarrier) {
   EXPECT_EQ(carrier.groundMaxRangeSquared, (8*32)*(8*32));
   EXPECT_EQ(carrier.airMaxRangeSquared, (8*32)*(8*32));
 
-  EXPECT_EQ(carrier.groundCooldown, 4);
-  EXPECT_EQ(carrier.airCooldown, 4);
+  EXPECT_EQ(carrier.groundCooldown, 5);
+  EXPECT_EQ(carrier.airCooldown, 5);
 }
 
 TEST(Data, SingleInterceptorCarrier) {
