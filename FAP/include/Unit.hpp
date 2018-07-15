@@ -137,8 +137,32 @@ namespace FAP {
     }
 
     auto constexpr setSpeedUpgrade(bool enable) && {
+      static_assert(hasFlag(UnitValues::unitType), "Set unit type before setting speed upgrade");
       static_assert(hasFlag(UnitValues::speed), "Set speed before setting speed upgrade");
-      unit.speed *= 1.0f + 0.5f * static_cast<float>(enable);
+      if (enable) {
+        switch (unit.unitType) {
+        case BWAPI::UnitTypes::Zerg_Zergling:
+        case BWAPI::UnitTypes::Zerg_Hydralisk:
+        case BWAPI::UnitTypes::Zerg_Ultralisk:
+        case BWAPI::UnitTypes::Protoss_Shuttle:
+        case BWAPI::UnitTypes::Protoss_Observer:
+        case BWAPI::UnitTypes::Protoss_Zealot:
+        case BWAPI::UnitTypes::Terran_Vulture:
+          unit.speed *= 1.5f;
+          break;
+
+        case BWAPI::UnitTypes::Protoss_Scout:
+          unit.speed *= 4.0f / 3.0f;
+          break;
+
+        case BWAPI::UnitTypes::Zerg_Overlord:
+          unit.speed *= 4.0f;
+          break;
+
+        default:
+          break;
+        }
+      }
       unit.speedSquared = unit.speed * unit.speed;
       return std::move(*this).template addFlag<UnitValues::speedUpgrade>();
     }
@@ -189,7 +213,7 @@ namespace FAP {
     }
 
     auto constexpr setAirCooldown(int airCooldown) && {
-      unit.groundCooldown = airCooldown;
+      unit.airCooldown = airCooldown;
       return std::move(*this).template addFlag<UnitValues::airCooldown>();
     }
 
@@ -242,10 +266,12 @@ namespace FAP {
     } 
 
     auto constexpr setStimmed(bool stimmed) && {
-      static_assert(hasFlag(UnitValues::groundCooldown) && hasFlag(UnitValues::airCooldown) && hasFlag(UnitValues::speed), "Set attack cooldown and speed before setting stim status");
+      static_assert(hasFlag(UnitValues::groundCooldown) && hasFlag(UnitValues::airCooldown), "Set attack cooldown before setting stim status");
+      static_assert(hasFlag(UnitValues::speed), "Set unit speed before setting stim status");
       unit.groundCooldown >>= static_cast<int>(stimmed);
       unit.airCooldown >>= static_cast<int>(stimmed);
-      unit.speed *= 1.5f;
+      unit.speed *= 1.0f + 0.5f * static_cast<int>(stimmed);
+      unit.speedSquared = unit.speed * unit.speed;
       return std::move(*this).template addFlag<UnitValues::stimmed>();
     }
 
@@ -325,10 +351,10 @@ namespace FAP {
       };
 
       int const groundRange[] = { unit.groundMaxRangeSquared, unit.groundMaxRangeSquared + extraRange(unit.unitType.groundWeapon()), 5 * 32, 6 * 32, 32 * 8, 32 * 8 };
-      unit.groundMaxRangeSquared = groundRange[rangeUpgraded + (unit.unitType == BWAPI::UnitTypes::Terran_Bunker) * 2 + (unit.unitType == BWAPI::UnitTypes::Protoss_Carrier) * 3];
+      unit.groundMaxRangeSquared = groundRange[rangeUpgraded + (unit.unitType == BWAPI::UnitTypes::Terran_Bunker) * 2 + (unit.unitType == BWAPI::UnitTypes::Protoss_Carrier) * 4];
 
       int const airRange[] = { unit.airMaxRangeSquared, unit.airMaxRangeSquared + extraRange(unit.unitType.groundWeapon()), 5 * 32, 6 * 32, 32 * 8, 32 * 8 };
-      unit.airMaxRangeSquared = airRange[rangeUpgraded + (unit.unitType == BWAPI::UnitTypes::Terran_Bunker) * 2 + (unit.unitType == BWAPI::UnitTypes::Protoss_Carrier) * 3];
+      unit.airMaxRangeSquared = airRange[rangeUpgraded + (unit.unitType == BWAPI::UnitTypes::Terran_Bunker) * 2 + (unit.unitType == BWAPI::UnitTypes::Protoss_Carrier) * 4];
 
       // Store squares of ranges
       unit.groundMinRangeSquared *= unit.groundMinRangeSquared;
