@@ -40,24 +40,12 @@ TEST(Data, MarineLoad) {
 TEST(Data, StimmedMarine) {
   FAP::FastAPproximation fap;
 
+  Upgrades stim;
+  stim.stimmed = true;
+
   fap.addUnitPlayer1(
-    FAP::makeUnit()
-    .setUnitType(BWAPI::UnitTypes::Terran_Marine)
-    .setPosition({ 0, 0 })
-    .setHealth(BWAPI::UnitTypes::Terran_Marine.maxHitPoints())
-    .setShields(BWAPI::UnitTypes::Terran_Marine.maxShields())
-    .setFlying(false)
-    .setElevation(-1)
-    .setScore(5)
-    .setAttackerCount(0)
-    .setArmorUpgrades(0)
-    .setAttackUpgrades(0)
-    .setShieldUpgrades(0)
-    .setSpeedUpgrade(false)
-    .setAttackSpeedUpgrade(false)
-    .setAttackCooldownRemaining(0)
-    .setStimmed(true)
-    .setRangeUpgrade(false)
+    testUnit(BWAPI::UnitTypes::Terran_Marine, stim)
+    .setPosition({0, 0})
   );
 
   auto marine = fap.getState().first->front();
@@ -72,24 +60,12 @@ TEST(Data, StimmedMarine) {
 TEST(Data, SpeedUpgradedZergling) {
   FAP::FastAPproximation fap;
 
+  Upgrades speedUpgrade;
+  speedUpgrade.speedUpgrade = true;
+
   fap.addUnitPlayer1(
-    FAP::makeUnit()
-    .setUnitType(BWAPI::UnitTypes::Zerg_Zergling)
+    testUnit(BWAPI::UnitTypes::Zerg_Zergling, speedUpgrade)
     .setPosition({ 0, 0 })
-    .setHealth(BWAPI::UnitTypes::Zerg_Zergling.maxHitPoints())
-    .setShields(BWAPI::UnitTypes::Zerg_Zergling.maxShields())
-    .setFlying(false)
-    .setElevation(-1)
-    .setScore(5)
-    .setAttackerCount(0)
-    .setArmorUpgrades(0)
-    .setAttackUpgrades(0)
-    .setShieldUpgrades(0)
-    .setSpeedUpgrade(true)
-    .setAttackSpeedUpgrade(false)
-    .setAttackCooldownRemaining(0)
-    .setStimmed(false)
-    .setRangeUpgrade(false)
   );
 
   auto ling = fap.getState().first->front();
@@ -101,24 +77,12 @@ TEST(Data, SpeedUpgradedZergling) {
 TEST(Data, SpeedUpgradedOverlord) {
   FAP::FastAPproximation fap;
 
+  Upgrades speedUpgrade;
+  speedUpgrade.speedUpgrade = true;
+
   fap.addUnitPlayer1(
-    FAP::makeUnit()
-    .setUnitType(BWAPI::UnitTypes::Zerg_Overlord)
-    .setPosition({ 0, 0 })
-    .setHealth(BWAPI::UnitTypes::Zerg_Overlord.maxHitPoints())
-    .setShields(BWAPI::UnitTypes::Zerg_Overlord.maxShields())
-    .setFlying(false)
-    .setElevation(-1)
-    .setScore(5)
-    .setAttackerCount(0)
-    .setArmorUpgrades(0)
-    .setAttackUpgrades(0)
-    .setShieldUpgrades(0)
-    .setSpeedUpgrade(true)
-    .setAttackSpeedUpgrade(false)
-    .setAttackCooldownRemaining(0)
-    .setStimmed(false)
-    .setRangeUpgrade(false)
+    testUnit(BWAPI::UnitTypes::Zerg_Overlord, speedUpgrade)
+    .setPosition({0, 0})
   );
 
   auto ling = fap.getState().first->front();
