@@ -1,0 +1,10 @@
+[submodule "external/OpenBW-bwapi"]
+	path = external/OpenBW-bwapi
+	url = https://github.com/OpenBW/bwapi.git
+[submodule "external/OpenBW"]
+	path = external/OpenBW
+	url = https://github.com/OpenBW/openbw
+[submodule "external/BWAPI"]
+	path = external/BWAPI
+	url = https://github.com/BWAPI/BWAPI.git
+	branch = develop
