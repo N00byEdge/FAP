@@ -242,6 +242,39 @@ TEST(Data, BunkerWithRangeUpgrade) {
     (BWAPI::UnitTypes::Terran_Marine.airWeapon().maxRange() + 64) * (BWAPI::UnitTypes::Terran_Marine.airWeapon().maxRange() + 64));
 }
 
+TEST(Data, Goliath) {
+  FAP::FastAPproximation fap;
+
+  fap.addUnitPlayer1(
+    testUnit(BWAPI::UnitTypes::Terran_Goliath)
+    .setPosition({0, 0})
+  );
+
+  auto goliath = fap.getState().first->front();
+
+  EXPECT_EQ(goliath.groundMaxRangeSquared,
+    BWAPI::UnitTypes::Terran_Goliath.groundWeapon().maxRange() * BWAPI::UnitTypes::Terran_Goliath.groundWeapon().maxRange());
+  EXPECT_EQ(goliath.airMaxRangeSquared,
+    BWAPI::UnitTypes::Terran_Goliath.airWeapon().maxRange() * BWAPI::UnitTypes::Terran_Goliath.airWeapon().maxRange());
+}
+
+TEST(Data, GoliathWithRange) {
+  FAP::FastAPproximation fap;
+  
+  Upgrades rangeUpgrade;
+  rangeUpgrade.rangeUpgrade = true;
+  fap.addUnitPlayer1(
+    testUnit(BWAPI::UnitTypes::Terran_Goliath, rangeUpgrade)
+    .setPosition({ 0, 0 })
+  );
+
+  auto goliath = fap.getState().first->front();
+  EXPECT_EQ(goliath.groundMaxRangeSquared,
+    BWAPI::UnitTypes::Terran_Goliath.groundWeapon().maxRange() * BWAPI::UnitTypes::Terran_Goliath.groundWeapon().maxRange());
+  EXPECT_EQ(goliath.airMaxRangeSquared,
+    (BWAPI::UnitTypes::Terran_Goliath.airWeapon().maxRange() + 3 * 32) * (BWAPI::UnitTypes::Terran_Goliath.airWeapon().maxRange() + 3 * 32));
+}
+
 TEST(Data, FullCarrier) {
   FAP::FastAPproximation fap;
 

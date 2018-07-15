@@ -218,12 +218,12 @@ namespace FAP {
     }
 
     auto constexpr setAirMaxRange(int airMaxRange) && {
-      unit.groundMaxRangeSquared = airMaxRange;
+      unit.airMaxRangeSquared = airMaxRange;
       return std::move(*this).template addFlag<UnitValues::airMaxRange>();
     }
 
     auto constexpr setAirMinRange(int airMinRange) && {
-      unit.groundMinRangeSquared = airMinRange;
+      unit.airMinRangeSquared = airMinRange;
       return std::move(*this).template addFlag<UnitValues::airMinRange>();
     }
 
@@ -353,7 +353,7 @@ namespace FAP {
       int const groundRange[] = { unit.groundMaxRangeSquared, unit.groundMaxRangeSquared + extraRange(unit.unitType.groundWeapon()), 5 * 32, 6 * 32, 32 * 8, 32 * 8 };
       unit.groundMaxRangeSquared = groundRange[rangeUpgraded + (unit.unitType == BWAPI::UnitTypes::Terran_Bunker) * 2 + (unit.unitType == BWAPI::UnitTypes::Protoss_Carrier) * 4];
 
-      int const airRange[] = { unit.airMaxRangeSquared, unit.airMaxRangeSquared + extraRange(unit.unitType.groundWeapon()), 5 * 32, 6 * 32, 32 * 8, 32 * 8 };
+      int const airRange[] = { unit.airMaxRangeSquared, unit.airMaxRangeSquared + extraRange(unit.unitType.airWeapon()), 5 * 32, 6 * 32, 32 * 8, 32 * 8 };
       unit.airMaxRangeSquared = airRange[rangeUpgraded + (unit.unitType == BWAPI::UnitTypes::Terran_Bunker) * 2 + (unit.unitType == BWAPI::UnitTypes::Protoss_Carrier) * 4];
 
       // Store squares of ranges
