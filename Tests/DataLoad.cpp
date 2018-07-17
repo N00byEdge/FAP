@@ -348,3 +348,93 @@ TEST(Data, SingleInterceptorCarrier) {
   EXPECT_EQ(carrier.groundCooldown, 37);
   EXPECT_EQ(carrier.airCooldown, 37);
 }
+
+TEST(Data, BunkerDeathSingleMarine) {
+  FAP::FastAPproximation fap;
+
+  fap.addUnitPlayer1(
+    FAP::makeUnit()
+    .setUnitType(BWAPI::UnitTypes::Terran_Bunker)
+    .setPosition({ 0, 0 })
+    .setHealth(1)
+    .setShields(BWAPI::UnitTypes::Terran_Bunker.maxShields())
+    .setFlying(false)
+    .setElevation(-1)
+    .setScore(5)
+    .setAttackerCount(1)
+    .setArmorUpgrades(0)
+    .setAttackUpgrades(0)
+    .setShieldUpgrades(0)
+    .setSpeedUpgrade(false)
+    .setAttackSpeedUpgrade(false)
+    .setAttackCooldownRemaining(0)
+    .setStimmed(false)
+    .setRangeUpgrade(false)
+  );
+
+  // Bunker killer
+  fap.addUnitPlayer2(
+    testUnit(BWAPI::UnitTypes::Terran_Marine)
+    .setPosition({0, 0})
+  );
+  
+  // Let bunker die to marine
+  fap.simulate(1);
+
+  EXPECT_EQ(fap.getState().first->size(), 1);
+
+  auto marine = fap.getState().first->front();
+  EXPECT_EQ(marine.unitType, BWAPI::UnitTypes::Terran_Marine);
+  EXPECT_EQ(marine.shields, BWAPI::UnitTypes::Terran_Marine.maxShields());
+  EXPECT_EQ(marine.health, BWAPI::UnitTypes::Terran_Marine.maxHitPoints());
+
+  EXPECT_EQ(marine.groundDamage, BWAPI::UnitTypes::Terran_Marine.groundWeapon().damageAmount());
+  EXPECT_EQ(marine.airDamage,    BWAPI::UnitTypes::Terran_Marine.airWeapon().damageAmount());
+
+  EXPECT_EQ(marine.groundMaxRangeSquared, BWAPI::UnitTypes::Terran_Marine.groundWeapon().maxRange()
+                                        * BWAPI::UnitTypes::Terran_Marine.groundWeapon().maxRange());
+
+  EXPECT_EQ(marine.airMaxRangeSquared, BWAPI::UnitTypes::Terran_Marine.airWeapon().maxRange()
+                                     * BWAPI::UnitTypes::Terran_Marine.airWeapon().maxRange());
+
+}
+
+TEST(Data, BunkerDeath4Marines) {
+  FAP::FastAPproximation fap;
+
+  fap.addUnitPlayer1(
+    FAP::makeUnit()
+    .setUnitType(BWAPI::UnitTypes::Terran_Bunker)
+    .setPosition({ 0, 0 })
+    .setHealth(1)
+    .setShields(BWAPI::UnitTypes::Terran_Bunker.maxShields())
+    .setFlying(false)
+    .setElevation(-1)
+    .setScore(5)
+    .setAttackerCount(4)
+    .setArmorUpgrades(0)
+    .setAttackUpgrades(0)
+    .setShieldUpgrades(0)
+    .setSpeedUpgrade(false)
+    .setAttackSpeedUpgrade(false)
+    .setAttackCooldownRemaining(0)
+    .setStimmed(false)
+    .setRangeUpgrade(false)
+  );
+
+  // Bunker killer
+  fap.addUnitPlayer2(
+    testUnit(BWAPI::UnitTypes::Terran_Marine)
+    .setPosition({ 0, 0 })
+  );
+
+  // Let bunker die to marine
+  fap.simulate(1);
+
+  EXPECT_EQ(fap.getState().first->size(), 4);
+
+  auto marine = fap.getState().first->front();
+  EXPECT_EQ(marine.unitType, BWAPI::UnitTypes::Terran_Marine);
+  EXPECT_EQ(marine.shields, BWAPI::UnitTypes::Terran_Marine.maxShields());
+  EXPECT_EQ(marine.health, BWAPI::UnitTypes::Terran_Marine.maxHitPoints());
+}

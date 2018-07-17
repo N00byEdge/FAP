@@ -419,7 +419,7 @@ namespace FAP {
   }
 
   void inline FastAPproximation::unitDeath(FAPUnit &&fu, std::vector<FAPUnit> &itsFriendlies) {
-    if (fu.unitType == BWAPI::UnitTypes::Terran_Bunker) {
+    if (fu.unitType == BWAPI::UnitTypes::Terran_Bunker && fu.numAttackers) {
       fu.unitType = BWAPI::UnitTypes::Terran_Marine;
 
       auto squaredRange = [](int tiles) constexpr {
@@ -430,10 +430,14 @@ namespace FAP {
       // No range upgrade
       case squaredRange(5):
         fu.groundMaxRangeSquared = squaredRange(4);
+        break;
       // Range upgrade
       case squaredRange(6):
         fu.groundMaxRangeSquared = squaredRange(5);
+        break;
       }
+
+      fu.airMaxRangeSquared = fu.groundMaxRangeSquared;
 
       // @TODO: I guess I need to ask the bot here, I'll make some interface for that
       fu.armor = 0;
@@ -443,7 +447,7 @@ namespace FAP {
       fu.groundCooldown *= 4;
       fu.airCooldown *= 4;
 
-      for (unsigned i = 0; i < 3; ++i)
+      for (int i = 0; i < fu.numAttackers - 1; ++i)
         itsFriendlies.push_back(reinterpret_cast<FAPUnit&>(fu));
       itsFriendlies.emplace_back(std::forward<FAPUnit>(fu));
     }

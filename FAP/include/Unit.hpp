@@ -76,6 +76,7 @@ namespace FAP {
     bool didHealThisFrame = false;
     int score;
 
+    int numAttackers;
     int attackCooldownRemaining;
   };
 
@@ -368,6 +369,7 @@ namespace FAP {
     // If the unit is a carrier (interceptor count) or bunker (marine count)
     auto constexpr setAttackerCount(int numAttackers) && {
       static_assert(hasFlag(UnitValues::unitType) && hasFlag(UnitValues::groundDamage) && hasFlag(UnitValues::airDamage), "Set unit type and damage before setting number of attackers");
+      unit.numAttackers = numAttackers;
       if (numAttackers) {
         if (unit.unitType == BWAPI::UnitTypes::Protoss_Carrier) {
           unit.groundDamage = unit.airDamage = BWAPI::UnitTypes::Protoss_Interceptor.groundWeapon().damageAmount();
