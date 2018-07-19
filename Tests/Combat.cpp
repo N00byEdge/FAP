@@ -4,7 +4,7 @@
 
 TEST(Combat, MarineTwoOnOne) {
   {
-    FAP::FastAPproximation fap;
+    FAP::FastAPproximation<> fap;
 
     for (int i = 0; i < 2; ++i)
       fap.addUnitPlayer1(
@@ -26,7 +26,7 @@ TEST(Combat, MarineTwoOnOne) {
 }
 
 TEST(Combat, MarineOnZealot) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   fap.addUnitPlayer1(
     testUnit(BWAPI::UnitTypes::Protoss_Zealot)
@@ -46,7 +46,7 @@ TEST(Combat, MarineOnZealot) {
 }
 
 TEST(Combat, MarineOnZergling) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   fap.addUnitPlayer1(
     testUnit(BWAPI::UnitTypes::Zerg_Zergling)
@@ -66,7 +66,7 @@ TEST(Combat, MarineOnZergling) {
 }
 
 TEST(Combat, MarineFiringAtValkyrie) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   fap.addUnitPlayer1(
     testUnit(BWAPI::UnitTypes::Terran_Marine)

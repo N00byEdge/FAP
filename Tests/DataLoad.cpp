@@ -3,7 +3,7 @@
 #include "gtest/gtest.h"
 
 TEST(Data, MarineLoad) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   fap.addUnitPlayer1(
     testUnit(BWAPI::UnitTypes::Terran_Marine)
@@ -38,7 +38,7 @@ TEST(Data, MarineLoad) {
 }
 
 TEST(Data, StimmedMarine) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   Upgrades stim;
   stim.stimmed = true;
@@ -58,7 +58,7 @@ TEST(Data, StimmedMarine) {
 }
 
 TEST(Data, SpeedUpgradedZergling) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   Upgrades speedUpgrade;
   speedUpgrade.speedUpgrade = true;
@@ -75,7 +75,7 @@ TEST(Data, SpeedUpgradedZergling) {
 }
 
 TEST(Data, SpeedUpgradedOverlord) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   Upgrades speedUpgrade;
   speedUpgrade.speedUpgrade = true;
@@ -92,7 +92,7 @@ TEST(Data, SpeedUpgradedOverlord) {
 }
 
 TEST(Data, SingleMarineInsideBunker) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   fap.addUnitPlayer1(
     FAP::makeUnit()
@@ -112,6 +112,7 @@ TEST(Data, SingleMarineInsideBunker) {
       .setAttackCooldownRemaining(0)
       .setStimmed(false)
       .setRangeUpgrade(false)
+      .setData({})
   );
 
   auto bunker = fap.getState().first->front();
@@ -142,7 +143,7 @@ TEST(Data, SingleMarineInsideBunker) {
 }
 
 TEST(Data, EmptyBunker) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   fap.addUnitPlayer1(
     FAP::makeUnit()
@@ -162,6 +163,7 @@ TEST(Data, EmptyBunker) {
     .setAttackCooldownRemaining(0)
     .setStimmed(false)
     .setRangeUpgrade(false)
+    .setData({})
   );
 
   auto bunker = fap.getState().first->front();
@@ -184,7 +186,7 @@ TEST(Data, EmptyBunker) {
 }
 
 TEST(Data, BunkerWithAttackUpgrade) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   fap.addUnitPlayer1(
     FAP::makeUnit()
@@ -204,6 +206,7 @@ TEST(Data, BunkerWithAttackUpgrade) {
     .setAttackCooldownRemaining(0)
     .setStimmed(false)
     .setRangeUpgrade(false)
+    .setData({})
   );
 
   auto bunker = fap.getState().first->front();
@@ -212,7 +215,7 @@ TEST(Data, BunkerWithAttackUpgrade) {
 }
 
 TEST(Data, BunkerWithRangeUpgrade) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   fap.addUnitPlayer1(
     FAP::makeUnit()
@@ -232,6 +235,7 @@ TEST(Data, BunkerWithRangeUpgrade) {
     .setAttackCooldownRemaining(0)
     .setStimmed(false)
     .setRangeUpgrade(true)
+    .setData({})
   );
 
   auto bunker = fap.getState().first->front();
@@ -243,7 +247,7 @@ TEST(Data, BunkerWithRangeUpgrade) {
 }
 
 TEST(Data, Goliath) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   fap.addUnitPlayer1(
     testUnit(BWAPI::UnitTypes::Terran_Goliath)
@@ -259,7 +263,7 @@ TEST(Data, Goliath) {
 }
 
 TEST(Data, GoliathWithRange) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
   
   Upgrades rangeUpgrade;
   rangeUpgrade.rangeUpgrade = true;
@@ -276,7 +280,7 @@ TEST(Data, GoliathWithRange) {
 }
 
 TEST(Data, FullCarrier) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   fap.addUnitPlayer1(
     FAP::makeUnit()
@@ -296,6 +300,7 @@ TEST(Data, FullCarrier) {
     .setAttackCooldownRemaining(0)
     .setStimmed(false)
     .setRangeUpgrade(true)
+    .setData({})
   );
 
   auto carrier = fap.getState().first->front();
@@ -313,7 +318,7 @@ TEST(Data, FullCarrier) {
 }
 
 TEST(Data, SingleInterceptorCarrier) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   fap.addUnitPlayer1(
     FAP::makeUnit()
@@ -333,6 +338,7 @@ TEST(Data, SingleInterceptorCarrier) {
     .setAttackCooldownRemaining(0)
     .setStimmed(false)
     .setRangeUpgrade(true)
+    .setData({})
   );
 
   auto carrier = fap.getState().first->front();
@@ -350,7 +356,7 @@ TEST(Data, SingleInterceptorCarrier) {
 }
 
 TEST(Data, BunkerDeathSingleMarine) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   fap.addUnitPlayer1(
     FAP::makeUnit()
@@ -370,6 +376,7 @@ TEST(Data, BunkerDeathSingleMarine) {
     .setAttackCooldownRemaining(0)
     .setStimmed(false)
     .setRangeUpgrade(false)
+    .setData({})
   );
 
   // Bunker killer
@@ -400,7 +407,7 @@ TEST(Data, BunkerDeathSingleMarine) {
 }
 
 TEST(Data, BunkerDeath4Marines) {
-  FAP::FastAPproximation fap;
+  FAP::FastAPproximation<> fap;
 
   fap.addUnitPlayer1(
     FAP::makeUnit()
@@ -420,6 +427,7 @@ TEST(Data, BunkerDeath4Marines) {
     .setAttackCooldownRemaining(0)
     .setStimmed(false)
     .setRangeUpgrade(false)
+    .setData({})
   );
 
   // Bunker killer
@@ -437,4 +445,32 @@ TEST(Data, BunkerDeath4Marines) {
   EXPECT_EQ(marine.unitType, BWAPI::UnitTypes::Terran_Marine);
   EXPECT_EQ(marine.shields, BWAPI::UnitTypes::Terran_Marine.maxShields());
   EXPECT_EQ(marine.health, BWAPI::UnitTypes::Terran_Marine.maxHitPoints());
+}
+
+TEST(Data, CustomDataStruct) {
+  FAP::FastAPproximation<int> fap;
+
+  fap.addUnitPlayer1(
+    FAP::makeUnit<int>()
+    .setUnitType(BWAPI::UnitTypes::Terran_Marine)
+    .setPosition({ 0, 0 })
+    .setHealth(BWAPI::UnitTypes::Terran_Bunker.maxHitPoints())
+    .setShields(BWAPI::UnitTypes::Terran_Bunker.maxShields())
+    .setFlying(false)
+    .setElevation(-1)
+    .setScore(5)
+    .setAttackerCount(0)
+    .setArmorUpgrades(0)
+    .setAttackUpgrades(0)
+    .setShieldUpgrades(0)
+    .setSpeedUpgrade(false)
+    .setAttackSpeedUpgrade(false)
+    .setAttackCooldownRemaining(0)
+    .setStimmed(false)
+    .setRangeUpgrade(false)
+    .setData(-5)
+  );
+
+  auto marine = fap.getState().first->front();
+  EXPECT_EQ(marine.data, -5);
 }

@@ -15,7 +15,7 @@ struct Upgrades {
 };
 
 auto inline testUnit(BWAPI::UnitType ut, Upgrades const &upgrades = {}) {
-  return FAP::makeUnit()
+  return FAP::makeUnit<>()
     .setUnitType(ut)
     .setHealth(ut.maxHitPoints())
     .setShields(ut.maxShields())
@@ -31,5 +31,6 @@ auto inline testUnit(BWAPI::UnitType ut, Upgrades const &upgrades = {}) {
     .setAttackSpeedUpgrade(upgrades.attackSpeedUpgrade)
     .setRangeUpgrade(upgrades.rangeUpgrade)
     .setStimmed(upgrades.stimmed)
+    .setData({})
   ;
 }
