@@ -110,7 +110,6 @@ namespace FAP {
     static_assert(Unit<uv>::hasFlag(UnitValues::unitType));
     static_assert(Unit<uv>::hasFlag(UnitValues::unitSize));
     static_assert(Unit<uv>::hasFlag(UnitValues::isOrganic));
-    static_assert(Unit<uv>::hasFlag(UnitValues::score));
     static_assert(Unit<uv>::hasFlag(UnitValues::armorUpgrades));
     static_assert(Unit<uv>::hasFlag(UnitValues::attackUpgrades));
     static_assert(Unit<uv>::hasFlag(UnitValues::shieldUpgrades));

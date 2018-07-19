@@ -20,7 +20,6 @@ auto inline testUnit(BWAPI::UnitType ut, Upgrades const &upgrades = {}) {
     .setHealth(ut.maxHitPoints())
     .setShields(ut.maxShields())
     .setFlying(ut.isFlyer())
-    .setScore(ut.buildScore())
     .setElevation()
     .setAttackerCount(ut == BWAPI::UnitTypes::Terran_Bunker ? 4 : 8)
     .setAttackCooldownRemaining()
