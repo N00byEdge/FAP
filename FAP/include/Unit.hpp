@@ -128,7 +128,7 @@ namespace FAP {
     }
 
     auto constexpr setShieldUpgrades(int shieldUpgrades) && {
-      unit.shieldArmor += shieldUpgrades;
+      unit.shieldArmor = shieldUpgrades;
       return std::move(*this).template addFlag<UnitValues::shieldUpgrades>();
     }
 
