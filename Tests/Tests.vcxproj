@@ -41,6 +41,7 @@
   <ItemGroup>
     <ClCompile Include="Combat.cpp" />
     <ClCompile Include="DataLoad.cpp" />
+    <ClCompile Include="NoLockup.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestUnit.hpp" />

@@ -286,7 +286,7 @@ namespace FAP {
 
       didSomething = true;
     }
-    else if (closestEnemy != enemyUnits.end() && closestDistSquared > fu.speedSquared) {
+    else if (closestEnemy != enemyUnits.end() && closestDistSquared > fu.speedSquared && fu.speed >= 1.0f) {
       auto const dx = closestEnemy->x - fu.x;
       auto const dy = closestEnemy->y - fu.y;
 
