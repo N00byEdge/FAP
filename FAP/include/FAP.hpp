@@ -230,6 +230,10 @@ namespace FAP {
       return;
     }
 
+    if(!(fu.groundDamage || fu.airDamage)) {
+      return;
+    }
+
     auto closestEnemy = enemyUnits.end();
     int closestDistSquared;
 
