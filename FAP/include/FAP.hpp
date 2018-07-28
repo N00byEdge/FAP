@@ -415,10 +415,14 @@ namespace FAP {
         fu.didHealThisFrame = false;
 
       if (fu.unitType.getRace() == BWAPI::Races::Zerg) {
-        if (fu.health < fu.maxHealth)
-          fu.health += 4;
-        if (fu.health > fu.maxHealth)
-          fu.health = fu.maxHealth;
+        if(fu.unitType != BWAPI::UnitTypes::Zerg_Egg &&
+           fu.unitType != BWAPI::UnitTypes::Zerg_Lurker_Egg &&
+           fu.unitType != BWAPI::UnitTypes::Zerg_Larva) {
+            if (fu.health < fu.maxHealth)
+              fu.health += 4;
+            if (fu.health > fu.maxHealth)
+              fu.health = fu.maxHealth;
+          }
       }
       else if (fu.unitType.getRace() == BWAPI::Races::Protoss) {
         if (fu.shields < fu.maxShields)
