@@ -92,10 +92,10 @@ TEST(Combat, StackedTank) {
     .setPosition({ 0, 0 })
   );
 
-    fap.addUnitPlayer2(
-      testUnit(BWAPI::UnitTypes::Terran_Siege_Tank_Siege_Mode)
-      .setPosition({ 0, 0 })
-    );
+  fap.addUnitPlayer2(
+    testUnit(BWAPI::UnitTypes::Terran_Siege_Tank_Siege_Mode)
+    .setPosition({ 0, 0 })
+  );
 
   fap.simulate(-1);
 
