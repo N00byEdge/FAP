@@ -83,3 +83,41 @@ TEST(Combat, MarineFiringAtValkyrie) {
   // Marine does 6-2 damage to valkyrie
   EXPECT_EQ(fap.getState().second->front().health, fap.getState().second->front().maxHealth - (4 << 8));
 }
+
+TEST(Combat, StackedTank) {
+  FAP::FastAPproximation<> fap;
+
+  fap.addUnitPlayer1(
+    testUnit(BWAPI::UnitTypes::Protoss_Dragoon)
+    .setPosition({ 0, 0 })
+  );
+
+    fap.addUnitPlayer2(
+      testUnit(BWAPI::UnitTypes::Terran_Siege_Tank_Siege_Mode)
+      .setPosition({ 0, 0 })
+    );
+
+  fap.simulate(-1);
+
+  EXPECT_FALSE(fap.getState().first->empty());
+  EXPECT_TRUE(fap.getState().second->empty());
+}
+
+TEST(Combat, NonStackedTank) {
+  FAP::FastAPproximation<> fap;
+
+  fap.addUnitPlayer1(
+    testUnit(BWAPI::UnitTypes::Protoss_Dragoon)
+    .setPosition({ 0, 0 })
+  );
+
+  fap.addUnitPlayer2(
+    testUnit(BWAPI::UnitTypes::Terran_Siege_Tank_Siege_Mode)
+    .setPosition({ 1000, 0 })
+  );
+
+  fap.simulate(-1);
+
+  EXPECT_TRUE(fap.getState().first->empty());
+  EXPECT_FALSE(fap.getState().second->empty());
+}
