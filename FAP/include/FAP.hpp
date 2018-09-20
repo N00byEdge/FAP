@@ -43,7 +43,7 @@ namespace FAP {
      * \brief Starts the simulation. You can run this function multiple times. Feel free to run once, get the state and keep running.
      * \param nFrames the number of frames to simulate. A negative number runs the sim until combat is over.
      */
-	template<bool tankSplash = false>
+  template<bool tankSplash = false>
     void simulate(int nFrames = 96); // = 24*4, 4 seconds on fastest
 
     /**
@@ -65,17 +65,17 @@ namespace FAP {
     static int distSquared(FAPUnit<UnitExtension> const &u1, const FAPUnit<UnitExtension> &u2);
     static bool isSuicideUnit(BWAPI::UnitType ut);
 
-	template<bool tankSplash>
+  template<bool tankSplash>
     void unitsim(FAPUnit<UnitExtension> &fu, std::vector<FAPUnit<UnitExtension>> &enemyUnits);
 
     static void medicsim(FAPUnit<UnitExtension> &fu, std::vector<FAPUnit<UnitExtension>> &friendlyUnits);
     bool suicideSim(FAPUnit<UnitExtension> &fu, std::vector<FAPUnit<UnitExtension>> &enemyUnits);
     
-	template<bool tankSplash>
-	void isimulate();
+  template<bool tankSplash>
+  void isimulate();
 
     static void unitDeath(FAPUnit<UnitExtension> &&fu, std::vector<FAPUnit<UnitExtension>> &itsFriendlies);
-	
+  
     static auto max(int a, int b) {
       int vars[2] = { a, b };
       return vars[b > a];
@@ -287,66 +287,66 @@ namespace FAP {
       else {
         dealDamage(*closestEnemy, fu.groundDamage, fu.groundDamageType);
 
-		if constexpr (tankSplash) {
-			if (fu.unitType == BWAPI::UnitTypes::Terran_Siege_Tank_Siege_Mode) {
-				const int siegeTankBlastRadiusInner = fu.unitType.groundWeapon().innerSplashRadius();
-				const int siegeTankBlastRadiusMedian = fu.unitType.groundWeapon().medianSplashRadius();
-				const int siegeTankBlastRadiusOuter = fu.unitType.groundWeapon().outerSplashRadius();
-				const int siegeTankBlastRadiusInnerSquared = siegeTankBlastRadiusInner * siegeTankBlastRadiusInner;
-				const int siegeTankBlastRadiusMedianSquared = siegeTankBlastRadiusMedian * siegeTankBlastRadiusMedian;
-				const int siegeTankBlastRadiusOuterSquared = siegeTankBlastRadiusOuter * siegeTankBlastRadiusOuter;
+    if constexpr (tankSplash) {
+      if (fu.unitType == BWAPI::UnitTypes::Terran_Siege_Tank_Siege_Mode) {
+        const int siegeTankBlastRadiusInner = fu.unitType.groundWeapon().innerSplashRadius();
+        const int siegeTankBlastRadiusMedian = fu.unitType.groundWeapon().medianSplashRadius();
+        const int siegeTankBlastRadiusOuter = fu.unitType.groundWeapon().outerSplashRadius();
+        const int siegeTankBlastRadiusInnerSquared = siegeTankBlastRadiusInner * siegeTankBlastRadiusInner;
+        const int siegeTankBlastRadiusMedianSquared = siegeTankBlastRadiusMedian * siegeTankBlastRadiusMedian;
+        const int siegeTankBlastRadiusOuterSquared = siegeTankBlastRadiusOuter * siegeTankBlastRadiusOuter;
 
-				/*
-				auto const underTaker = [](FAPUnit<UnitExtension> enemyIt, bool killed, std::vector<FAPUnit<UnitExtension>>& enemyUnits) {
-					if (enemyIt.health < 1) {
-						killed = true;
-						auto temp = enemyIt;
-						enemyIt = enemyUnits.back();
-						enemyUnits.pop_back();
-						unitDeath(std::move(temp), enemyUnits);
-					}
-					return;
-				};*/
+        /*
+        auto const underTaker = [](FAPUnit<UnitExtension> enemyIt, bool killed, std::vector<FAPUnit<UnitExtension>>& enemyUnits) {
+          if (enemyIt.health < 1) {
+            killed = true;
+            auto temp = enemyIt;
+            enemyIt = enemyUnits.back();
+            enemyUnits.pop_back();
+            unitDeath(std::move(temp), enemyUnits);
+          }
+          return;
+        };*/
 
-				for (auto enemyIt = enemyUnits.begin(); enemyIt != enemyUnits.end();) {
-					if (!enemyIt->flying && enemyIt != closestEnemy) {
-						bool killed = false;
-						auto const effectiveDistToClosestEnemySquared = distSquared(*closestEnemy, *enemyIt) / 4; // shell hit point to unit edge
-						auto underTaker = [&enemyIt, &killed, &enemyUnits]() {
-							if (enemyIt->health < 1) {
-								killed = true;
-								auto temp = *enemyIt;
-								*enemyIt = enemyUnits.back();
-								enemyUnits.pop_back();
-								unitDeath(std::move(temp), enemyUnits);
-							}
-							return;
-						};
+        for (auto enemyIt = enemyUnits.begin(); enemyIt != enemyUnits.end();) {
+          if (!enemyIt->flying && enemyIt != closestEnemy) {
+            bool killed = false;
+            auto const effectiveDistToClosestEnemySquared = distSquared(*closestEnemy, *enemyIt) / 4; // shell hit point to unit edge
+            auto underTaker = [&enemyIt, &killed, &enemyUnits]() {
+              if (enemyIt->health < 1) {
+                killed = true;
+                auto temp = *enemyIt;
+                *enemyIt = enemyUnits.back();
+                enemyUnits.pop_back();
+                unitDeath(std::move(temp), enemyUnits);
+              }
+              return;
+            };
 
-						if (effectiveDistToClosestEnemySquared <= siegeTankBlastRadiusInnerSquared) { // inner
-							dealDamage(*enemyIt, fu.groundDamage, fu.groundDamageType);
-							underTaker();
-						}
-						else if (effectiveDistToClosestEnemySquared > siegeTankBlastRadiusInnerSquared && effectiveDistToClosestEnemySquared <= siegeTankBlastRadiusMedianSquared) { // median
-							dealDamage(*enemyIt, fu.groundDamage / 2, fu.groundDamageType);
-							underTaker();
-						}
-						else if (effectiveDistToClosestEnemySquared > siegeTankBlastRadiusMedianSquared && effectiveDistToClosestEnemySquared <= siegeTankBlastRadiusOuterSquared) { // outer
-							dealDamage(*enemyIt, fu.groundDamage / 4, fu.groundDamageType);
-							underTaker();
-						}
-						else { // unaffected
-							;
-						}
-						if (!killed) ++enemyIt;
+            if (effectiveDistToClosestEnemySquared <= siegeTankBlastRadiusInnerSquared) { // inner
+              dealDamage(*enemyIt, fu.groundDamage, fu.groundDamageType);
+              underTaker();
+            }
+            else if (effectiveDistToClosestEnemySquared > siegeTankBlastRadiusInnerSquared && effectiveDistToClosestEnemySquared <= siegeTankBlastRadiusMedianSquared) { // median
+              dealDamage(*enemyIt, fu.groundDamage / 2, fu.groundDamageType);
+              underTaker();
+            }
+            else if (effectiveDistToClosestEnemySquared > siegeTankBlastRadiusMedianSquared && effectiveDistToClosestEnemySquared <= siegeTankBlastRadiusOuterSquared) { // outer
+              dealDamage(*enemyIt, fu.groundDamage / 4, fu.groundDamageType);
+              underTaker();
+            }
+            else { // unaffected
+              ;
+            }
+            if (!killed) ++enemyIt;
 
-					}
-					else ++enemyIt;
-				}
-			}
-		}
+          }
+          else ++enemyIt;
+        }
+      }
+    }
 
-		fu.attackCooldownRemaining =
+    fu.attackCooldownRemaining =
           fu.groundCooldown << static_cast<int>((fu.elevation != -1) & (closestEnemy->elevation != -1) & (closestEnemy->elevation > fu.elevation));
       }
 
