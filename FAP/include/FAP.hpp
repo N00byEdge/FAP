@@ -140,7 +140,7 @@ namespace FAP {
   template<typename UnitExtension>
   template<UnitValues uv>
   void FastAPproximation<UnitExtension>::addIfCombatUnitPlayer1(Unit<uv, UnitExtension> &&fu) {
-    if (isCombatUnit(fu))
+    if (isCombatUnit(fu.unit))
       addUnitPlayer1(fu);
   }
 
@@ -154,7 +154,7 @@ namespace FAP {
   template<typename UnitExtension>
   template<UnitValues uv>
   void FastAPproximation<UnitExtension>::addIfCombatUnitPlayer2(Unit<uv, UnitExtension> &&fu) {
-    if (isCombatUnit(fu))
+    if (isCombatUnit(fu.unit))
       addUnitPlayer2(fu);
   }
 
