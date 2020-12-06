@@ -296,15 +296,16 @@ namespace FAP {
             const int siegeTankBlastRadiusMedianSquared = siegeTankBlastRadiusMedian * siegeTankBlastRadiusMedian;
             const int siegeTankBlastRadiusOuterSquared = siegeTankBlastRadiusOuter * siegeTankBlastRadiusOuter;
 
-            for (auto enemyIt = enemyUnits.begin(); enemyIt != enemyUnits.end();) {
-              if (!enemyIt->flying && enemyIt != closestEnemy) {
+            for (auto enemyidx = 0ull; enemyidx < enemyUnits.size();) {
+              auto &eu = enemyUnits[enemyidx];
+              if (!eu.flying && &eu != &*closestEnemy) {
                 bool killed = false;
-                auto const effectiveDistToClosestEnemySquared = distSquared(*closestEnemy, *enemyIt) / 4; // shell hit point to unit edge
+                auto const effectiveDistToClosestEnemySquared = distSquared(*closestEnemy, eu) / 4; // shell hit point to unit edge
                 auto underTaker = [&]() {
-                  if (enemyIt->health < 1) {
+                  if (eu.health < 1) {
                     killed = true;
-                    auto temp = *enemyIt;
-                    *enemyIt = enemyUnits.back();
+                    auto temp = eu;
+                    eu = enemyUnits.back();
                     enemyUnits.pop_back();
                     unitDeath(std::move(temp), enemyUnits);
                   }
@@ -312,20 +313,20 @@ namespace FAP {
                 };
 
                 if (effectiveDistToClosestEnemySquared <= siegeTankBlastRadiusInnerSquared) { // inner
-                  dealDamage(*enemyIt, fu.groundDamage, fu.groundDamageType);
+                  dealDamage(eu, fu.groundDamage, fu.groundDamageType);
                   underTaker();
                 }
                 else if (effectiveDistToClosestEnemySquared > siegeTankBlastRadiusInnerSquared && effectiveDistToClosestEnemySquared <= siegeTankBlastRadiusMedianSquared) { // median
-                  dealDamage(*enemyIt, fu.groundDamage / 2, fu.groundDamageType);
+                  dealDamage(eu, fu.groundDamage / 2, fu.groundDamageType);
                   underTaker();
                 }
                 else if (effectiveDistToClosestEnemySquared > siegeTankBlastRadiusMedianSquared && effectiveDistToClosestEnemySquared <= siegeTankBlastRadiusOuterSquared) { // outer
-                  dealDamage(*enemyIt, fu.groundDamage / 4, fu.groundDamageType);
+                  dealDamage(eu, fu.groundDamage / 4, fu.groundDamageType);
                   underTaker();
                 }
-                if (!killed) ++enemyIt;
+                if (!killed) ++enemyidx;
               }
-              else ++enemyIt;
+              else ++enemyidx;
             }
           }
         }
