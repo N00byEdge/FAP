@@ -179,3 +179,32 @@ TEST(Combat, OneTankOnTwoLings) {
   run_testTanks<true>(radiiSeq);
   run_testTanks<false>(radiiSeq);
 }
+
+TEST(Combat, TankNoCrashKillingBunker) {
+  FAP::FastAPproximation<> fap;
+
+  fap.addUnitPlayer1(
+    testUnit(BWAPI::UnitTypes::Terran_Siege_Tank_Siege_Mode)
+    .setPosition({ 0, 0 })
+  );
+
+  fap.addUnitPlayer2(
+    testUnit(BWAPI::UnitTypes::Terran_Bunker)
+    // Bunker in range of tank, but can't shoot back
+    // this gurantees that the first unit to die is a bunker
+    .setPosition({ 350, 0 })
+  );
+
+  // Add bunkers until the vector is at capacity
+  while(fap.getState().second->capacity() != fap.getState().second->size()) {
+    fap.addUnitPlayer2(
+      testUnit(BWAPI::UnitTypes::Terran_Bunker)
+      .setPosition({ 350, 0 })
+    );
+  }
+
+  // Now the vector is at capacity, killing a bunker will cause it to resize.
+  fap.simulate<true>(-1);
+
+  // If we got this far, we didn't crash! Woop!
+}
