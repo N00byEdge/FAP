@@ -158,11 +158,13 @@ int testTanks() {
     splashedLingRemainingHealth = 35;
 
   // check which player wins/loses
-  EXPECT_EQ(fap.getState().first->empty(), tankSplash && maxDistanceBetweenUnits <= 20);
+  bool ling_died = tankSplash && maxDistanceBetweenUnits <= 20;
+  EXPECT_EQ(fap.getState().first->empty(), ling_died);
   EXPECT_EQ(fap.getState().second->empty(), !tankSplash || tankSplash && maxDistanceBetweenUnits > 20);
 
   // check actual splash damage dealt (a function of maxDistanceBetweenUnits)
-  EXPECT_EQ(fap.getState().first->front().health >> 8, splashedLingRemainingHealth);
+  if(!ling_died)
+    EXPECT_EQ(fap.getState().first->front().health >> 8, splashedLingRemainingHealth);
   return 1;
 }
 
