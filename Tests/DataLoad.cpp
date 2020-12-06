@@ -385,8 +385,8 @@ TEST(Data, BunkerDeathSingleMarine) {
 
   auto marine = fap.getState().first->front();
   EXPECT_EQ(marine.unitType, BWAPI::UnitTypes::Terran_Marine);
-  EXPECT_EQ(marine.shields, BWAPI::UnitTypes::Terran_Marine.maxShields());
-  EXPECT_EQ(marine.health, BWAPI::UnitTypes::Terran_Marine.maxHitPoints());
+  EXPECT_EQ(marine.shields, BWAPI::UnitTypes::Terran_Marine.maxShields() << 8);
+  EXPECT_EQ(marine.health, BWAPI::UnitTypes::Terran_Marine.maxHitPoints() << 8);
 
   EXPECT_EQ(marine.groundDamage, BWAPI::UnitTypes::Terran_Marine.groundWeapon().damageAmount());
   EXPECT_EQ(marine.airDamage,    BWAPI::UnitTypes::Terran_Marine.airWeapon().damageAmount());
@@ -435,8 +435,8 @@ TEST(Data, BunkerDeath4Marines) {
 
   auto marine = fap.getState().first->front();
   EXPECT_EQ(marine.unitType, BWAPI::UnitTypes::Terran_Marine);
-  EXPECT_EQ(marine.shields, BWAPI::UnitTypes::Terran_Marine.maxShields());
-  EXPECT_EQ(marine.health, BWAPI::UnitTypes::Terran_Marine.maxHitPoints());
+  EXPECT_EQ(marine.shields, BWAPI::UnitTypes::Terran_Marine.maxShields() << 8);
+  EXPECT_EQ(marine.health, BWAPI::UnitTypes::Terran_Marine.maxHitPoints() << 8);
 }
 
 TEST(Data, CustomDataStruct) {
