@@ -523,10 +523,10 @@ namespace FAP {
       // @TODO: I guess I need to ask the bot here, I'll make some interface for that
       fu.armor = 0;
 
-      fu.health = fu.maxHealth = BWAPI::UnitTypes::Terran_Marine.maxHitPoints();
+      fu.health = fu.maxHealth = BWAPI::UnitTypes::Terran_Marine.maxHitPoints() << 8;
 
-      fu.groundCooldown *= 4;
-      fu.airCooldown *= 4;
+      fu.groundCooldown *= fu.numAttackers;
+      fu.airCooldown *= fu.numAttackers;
 
       for (int i = 0; i < fu.numAttackers - 1; ++i)
         itsFriendlies.push_back(reinterpret_cast<FAPUnit<UnitExtension>&>(fu));
